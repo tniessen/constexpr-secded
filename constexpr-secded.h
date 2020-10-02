@@ -22,6 +22,9 @@
 * SOFTWARE.
 */
 
+#ifndef CONSTEXPR_SECDED_H
+#define CONSTEXPR_SECDED_H
+
 #include <stdint.h>
 
 /*
@@ -209,3 +212,5 @@
  * The results are guaranteed to have a hamming distance of at least 4.
  */
 #define SECDED_57_BITS_TO_SIGNED_64(v) ((int64_t)(SECDED_64_57_ENCODE((uint64_t)(v))))
+
+#endif  /* CONSTEXPR_SECDED_H */
