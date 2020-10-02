@@ -1,0 +1,28 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+  schedule:
+    - cron: '0 0 * * *'
+
+jobs:
+  test:
+    runs-on: ${{matrix.os}}
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-latest
+          - macOS-latest
+        cc:
+          - gcc
+          - clang
+        cstd:
+          - c89
+          - c99
+          - c11
+    steps:
+      - uses: actions/checkout@master
+      - name: Test
+        run: make -C test CC=${{matrix.cc}} CFLAGS="-std=${{matrix.cstd}}"
