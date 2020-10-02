@@ -7,7 +7,8 @@ on:
     - cron: '0 0 * * *'
 
 jobs:
-  test:
+  test_c:
+    name: "${{matrix.cstd}}/${{matrix.cc}}/${{matrix.os}}"
     runs-on: ${{matrix.os}}
     strategy:
       fail-fast: false
@@ -25,4 +26,24 @@ jobs:
     steps:
       - uses: actions/checkout@master
       - name: Test
-        run: make -C test CC=${{matrix.cc}} CFLAGS="-std=${{matrix.cstd}}"
+        run: make -C test lang_c CC=${{matrix.cc}} CFLAGS="-std=${{matrix.cstd}}"
+  test_cpp:
+    name: "${{matrix.cxxstd}}/${{matrix.cxx}}/${{matrix.os}}"
+    runs-on: ${{matrix.os}}
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-latest
+          - macOS-latest
+        cxx:
+          - g++
+          - clang++
+        cxxstd:
+          - c++11
+          - c++14
+          - c++17
+    steps:
+      - uses: actions/checkout@master
+      - name: Test
+        run: make -C test lang_cpp CXX=${{matrix.cxx}} CXXFLAGS="-std=${{matrix.cxxstd}}"

@@ -25,7 +25,12 @@
 #ifndef CONSTEXPR_SECDED_H
 #define CONSTEXPR_SECDED_H
 
-#include <stdint.h>
+#ifdef __cplusplus
+# include <cstdint>
+# include <type_traits>
+#else
+# include <stdint.h>
+#endif
 
 /*
  * SECDED code for m = 3, n = 8, k = 4.
@@ -93,6 +98,86 @@
  */
 #define SECDED_4_BITS_TO_SIGNED_64(v) (((((int64_t)(SECDED_4_BITS_TO_SIGNED_32(v)))) << (((int64_t)(32)))) | ((int64_t)(SECDED_4_BITS_TO_SIGNED_32(v))))
 
+#ifdef __cplusplus
+
+template <typename T>
+constexpr typename std::enable_if<std::is_unsigned<T>::value, T>::type secded_encode_4_bits(std::uint8_t);
+
+/*
+ * Encodes the lower 4 bits into a 8 bit unsigned integer.
+ * The results are guaranteed to have a hamming distance of at least 4.
+ */
+template<> constexpr std::uint8_t secded_encode_4_bits<std::uint8_t>(std::uint8_t v) {
+  return SECDED_4_BITS_TO_UNSIGNED_8(v);
+}
+
+/*
+ * Encodes the lower 4 bits into a 8 bit unsigned integer, which is then
+ * expanded to 16 bits.
+ * The results are guaranteed to have a hamming distance of at least 8.
+ */
+template<> constexpr std::uint16_t secded_encode_4_bits<std::uint16_t>(std::uint8_t v) {
+  return SECDED_4_BITS_TO_UNSIGNED_16(v);
+}
+
+/*
+ * Encodes the lower 4 bits into a 8 bit unsigned integer, which is then
+ * expanded to 32 bits.
+ * The results are guaranteed to have a hamming distance of at least 16.
+ */
+template<> constexpr std::uint32_t secded_encode_4_bits<std::uint32_t>(std::uint8_t v) {
+  return SECDED_4_BITS_TO_UNSIGNED_32(v);
+}
+
+/*
+ * Encodes the lower 4 bits into a 8 bit unsigned integer, which is then
+ * expanded to 64 bits.
+ * The results are guaranteed to have a hamming distance of at least 32.
+ */
+template<> constexpr std::uint64_t secded_encode_4_bits<std::uint64_t>(std::uint8_t v) {
+  return SECDED_4_BITS_TO_UNSIGNED_64(v);
+}
+
+template <typename T>
+constexpr typename std::enable_if<std::is_signed<T>::value, T>::type secded_encode_4_bits(std::int8_t);
+
+/*
+ * Encodes the lower 4 bits into a 8 bit signed integer.
+ * The results are guaranteed to have a hamming distance of at least 4.
+ */
+template<> constexpr std::int8_t secded_encode_4_bits<std::int8_t>(std::int8_t v) {
+  return SECDED_4_BITS_TO_SIGNED_8(v);
+}
+
+/*
+ * Encodes the lower 4 bits into a 8 bit signed integer, which is then
+ * expanded to 16 bits.
+ * The results are guaranteed to have a hamming distance of at least 8.
+ */
+template<> constexpr std::int16_t secded_encode_4_bits<std::int16_t>(std::int8_t v) {
+  return SECDED_4_BITS_TO_SIGNED_16(v);
+}
+
+/*
+ * Encodes the lower 4 bits into a 8 bit signed integer, which is then
+ * expanded to 32 bits.
+ * The results are guaranteed to have a hamming distance of at least 16.
+ */
+template<> constexpr std::int32_t secded_encode_4_bits<std::int32_t>(std::int8_t v) {
+  return SECDED_4_BITS_TO_SIGNED_32(v);
+}
+
+/*
+ * Encodes the lower 4 bits into a 8 bit signed integer, which is then
+ * expanded to 64 bits.
+ * The results are guaranteed to have a hamming distance of at least 32.
+ */
+template<> constexpr std::int64_t secded_encode_4_bits<std::int64_t>(std::int8_t v) {
+  return SECDED_4_BITS_TO_SIGNED_64(v);
+}
+
+#endif  /* __cplusplus */
+
 /*
  * SECDED code for m = 4, n = 16, k = 11.
  *
@@ -146,6 +231,68 @@
  */
 #define SECDED_11_BITS_TO_SIGNED_64(v) (((((int64_t)(SECDED_11_BITS_TO_SIGNED_32(v)))) << (((int64_t)(32)))) | ((int64_t)(SECDED_11_BITS_TO_SIGNED_32(v))))
 
+#ifdef __cplusplus
+
+template <typename T>
+constexpr typename std::enable_if<std::is_unsigned<T>::value, T>::type secded_encode_11_bits(std::uint16_t);
+
+/*
+ * Encodes the lower 11 bits into a 16 bit unsigned integer.
+ * The results are guaranteed to have a hamming distance of at least 4.
+ */
+template<> constexpr std::uint16_t secded_encode_11_bits<std::uint16_t>(std::uint16_t v) {
+  return SECDED_11_BITS_TO_UNSIGNED_16(v);
+}
+
+/*
+ * Encodes the lower 11 bits into a 16 bit unsigned integer, which is then
+ * expanded to 32 bits.
+ * The results are guaranteed to have a hamming distance of at least 8.
+ */
+template<> constexpr std::uint32_t secded_encode_11_bits<std::uint32_t>(std::uint16_t v) {
+  return SECDED_11_BITS_TO_UNSIGNED_32(v);
+}
+
+/*
+ * Encodes the lower 11 bits into a 16 bit unsigned integer, which is then
+ * expanded to 64 bits.
+ * The results are guaranteed to have a hamming distance of at least 16.
+ */
+template<> constexpr std::uint64_t secded_encode_11_bits<std::uint64_t>(std::uint16_t v) {
+  return SECDED_11_BITS_TO_UNSIGNED_64(v);
+}
+
+template <typename T>
+constexpr typename std::enable_if<std::is_signed<T>::value, T>::type secded_encode_11_bits(std::int16_t);
+
+/*
+ * Encodes the lower 11 bits into a 16 bit signed integer.
+ * The results are guaranteed to have a hamming distance of at least 4.
+ */
+template<> constexpr std::int16_t secded_encode_11_bits<std::int16_t>(std::int16_t v) {
+  return SECDED_11_BITS_TO_SIGNED_16(v);
+}
+
+/*
+ * Encodes the lower 11 bits into a 16 bit signed integer, which is then
+ * expanded to 32 bits.
+ * The results are guaranteed to have a hamming distance of at least 8.
+ */
+template<> constexpr std::int32_t secded_encode_11_bits<std::int32_t>(std::int16_t v) {
+  return SECDED_11_BITS_TO_SIGNED_32(v);
+}
+
+/*
+ * Encodes the lower 11 bits into a 16 bit signed integer, which is then
+ * expanded to 64 bits.
+ * The results are guaranteed to have a hamming distance of at least 16.
+ */
+template<> constexpr std::int64_t secded_encode_11_bits<std::int64_t>(std::int16_t v) {
+  return SECDED_11_BITS_TO_SIGNED_64(v);
+}
+
+#endif  /* __cplusplus */
+
 /*
  * SECDED code for m = 5, n = 32, k = 26.
  *
@@ -186,6 +333,50 @@
  */
 #define SECDED_26_BITS_TO_SIGNED_64(v) (((((int64_t)(SECDED_26_BITS_TO_SIGNED_32(v)))) << (((int64_t)(32)))) | ((int64_t)(SECDED_26_BITS_TO_SIGNED_32(v))))
 
+#ifdef __cplusplus
+
+template <typename T>
+constexpr typename std::enable_if<std::is_unsigned<T>::value, T>::type secded_encode_26_bits(std::uint32_t);
+
+/*
+ * Encodes the lower 26 bits into a 32 bit unsigned integer.
+ * The results are guaranteed to have a hamming distance of at least 4.
+ */
+template<> constexpr std::uint32_t secded_encode_26_bits<std::uint32_t>(std::uint32_t v) {
+  return SECDED_26_BITS_TO_UNSIGNED_32(v);
+}
+
+/*
+ * Encodes the lower 26 bits into a 32 bit unsigned integer, which is then
+ * expanded to 64 bits.
+ * The results are guaranteed to have a hamming distance of at least 8.
+ */
+template<> constexpr std::uint64_t secded_encode_26_bits<std::uint64_t>(std::uint32_t v) {
+  return SECDED_26_BITS_TO_UNSIGNED_64(v);
+}
+
+template <typename T>
+constexpr typename std::enable_if<std::is_signed<T>::value, T>::type secded_encode_26_bits(std::int32_t);
+
+/*
+ * Encodes the lower 26 bits into a 32 bit signed integer.
+ * The results are guaranteed to have a hamming distance of at least 4.
+ */
+template<> constexpr std::int32_t secded_encode_26_bits<std::int32_t>(std::int32_t v) {
+  return SECDED_26_BITS_TO_SIGNED_32(v);
+}
+
+/*
+ * Encodes the lower 26 bits into a 32 bit signed integer, which is then
+ * expanded to 64 bits.
+ * The results are guaranteed to have a hamming distance of at least 8.
+ */
+template<> constexpr std::int64_t secded_encode_26_bits<std::int64_t>(std::int32_t v) {
+  return SECDED_26_BITS_TO_SIGNED_64(v);
+}
+
+#endif  /* __cplusplus */
+
 /*
  * SECDED code for m = 6, n = 64, k = 57.
  *
@@ -212,5 +403,31 @@
  * The results are guaranteed to have a hamming distance of at least 4.
  */
 #define SECDED_57_BITS_TO_SIGNED_64(v) ((int64_t)(SECDED_64_57_ENCODE((uint64_t)(v))))
+
+#ifdef __cplusplus
+
+template <typename T>
+constexpr typename std::enable_if<std::is_unsigned<T>::value, T>::type secded_encode_57_bits(std::uint64_t);
+
+/*
+ * Encodes the lower 57 bits into a 64 bit unsigned integer.
+ * The results are guaranteed to have a hamming distance of at least 4.
+ */
+template<> constexpr std::uint64_t secded_encode_57_bits<std::uint64_t>(std::uint64_t v) {
+  return SECDED_57_BITS_TO_UNSIGNED_64(v);
+}
+
+template <typename T>
+constexpr typename std::enable_if<std::is_signed<T>::value, T>::type secded_encode_57_bits(std::int64_t);
+
+/*
+ * Encodes the lower 57 bits into a 64 bit signed integer.
+ * The results are guaranteed to have a hamming distance of at least 4.
+ */
+template<> constexpr std::int64_t secded_encode_57_bits<std::int64_t>(std::int64_t v) {
+  return SECDED_57_BITS_TO_SIGNED_64(v);
+}
+
+#endif  /* __cplusplus */
 
 #endif  /* CONSTEXPR_SECDED_H */
