@@ -78,10 +78,30 @@ static void test_16_bit_minimum_distance(void) {
   }
 }
 
+static void test_32_bit_low_weight(void) {
+  uint32_t i, v;
+  for (i = 0; i < 26; i++) {
+    v = SECDED_26_BITS_TO_UNSIGNED_32(1 << i);
+    assert(4 <= v);
+    assert(3 <= weight(v & ((uint32_t) 0x3f << 26)));
+  }
+}
+
+static void test_64_bit_low_weight(void) {
+  uint64_t i, v;
+  for (i = 0; i < 57; i++) {
+    v = SECDED_57_BITS_TO_UNSIGNED_64(1 << i);
+    assert(4 <= v);
+    assert(3 <= weight(v & ((uint64_t) 0x7f << 57)));
+  }
+}
+
 int main(void) {
   test_generated_test_vectors();
   test_additive_identity();
   test_8_bit_minimum_distance();
   test_16_bit_minimum_distance();
+  test_32_bit_low_weight();
+  test_64_bit_low_weight();
   return 0;
 }
