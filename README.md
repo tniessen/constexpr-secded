@@ -5,7 +5,8 @@ expressions only, and was designed to enhance memory safety for low-level
 systems with high memory error rates.
 
 The implementation relies on Hamming codes with an additional parity bit. The
-respective parity check matrices are listed in [the code](constexpr-secded.h).
+respective parity check matrices are listed in
+[the code](include/constexpr-secded.h).
 
 The code complies with the C89, C99, C11, C++11, C++14, and C++17 standards.
 

@@ -1,4 +1,4 @@
-#include "../constexpr-secded.h"
+#include "../include/constexpr-secded.h"
 
 #ifdef NDEBUG
 # error "Do not specify NDEBUG for tests."
